@@ -1,0 +1,45 @@
+# Typecheck, lint, build, and run the browser suites on every push and PR.
+name: Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck, lint, build
+        run: npm run verify
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Serve the build
+        run: npx vite preview --port 4173 --host 127.0.0.1 &
+
+      - name: Wait for the server
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173 >/dev/null 2>&1; then
+              echo "server up"; exit 0
+            fi
+            sleep 2
+          done
+          echo "preview server never came up"; exit 1
+
+      - name: Smoke test
+        run: npm run test:smoke -- http://127.0.0.1:4173
+
+      - name: Mobile suite
+        run: npm run test:mobile -- http://127.0.0.1:4173

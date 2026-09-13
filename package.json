@@ -1,0 +1,46 @@
+{
+  "name": "ajr-mui-dashboard-template",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AJR MUI dashboard kit \u2014 shared theme, app shell and plug-and-play blocks, plus a Netlify-servable demo.",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "tsc -b --noEmit",
+    "build": "tsc -b --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "test:mobile": "node tests/mobile.mjs",
+    "test:smoke": "node tests/smoke.mjs",
+    "verify": "npm run typecheck && npm run lint && npm run build"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.11",
+    "@mui/material": "^7.3.11",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-web-links": "^0.12.0",
+    "@xterm/xterm": "^6.0.0",
+    "@xyflow/react": "^12.11.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.1",
+    "recharts": "^3.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.2",
+    "eslint": "^9.35.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "playwright": "^1.63.0",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.43.0",
+    "vite": "^7.1.5"
+  }
+}

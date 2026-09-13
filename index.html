@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="AJR MUI dashboard kit — shared theme, app shell and plug-and-play blocks." />
+    <meta name="color-scheme" content="dark light" />
+    <title>AJR MUI Dashboard Kit</title>
+
+    <!--
+      Dark from the first painted frame.
+
+      MUI only stamps data-mui-color-scheme when its provider mounts, so
+      without this the browser paints a white canvas for however long the
+      bundle takes to download and parse — a white flash on a dark app, worst
+      on a cold cache and a slow connection.
+
+      The script below is the string produced by colorSchemeInitScript() in
+      src/kit/theme/initColorScheme.ts; the critical CSS covers the instant
+      before even that runs. Keep the two in step if you change the storage key
+      or the default scheme.
+    -->
+    <style>
+      :root {
+        color-scheme: dark;
+        background-color: #0E0E0E;
+      }
+      :root[data-mui-color-scheme='light'] {
+        color-scheme: light;
+        background-color: hsl(220, 35%, 97%);
+      }
+    </style>
+    <script>(function(){try{var m=localStorage.getItem('ajr-color-scheme');if(m!=='light'&&m!=='dark')m='dark';document.documentElement.setAttribute('data-mui-color-scheme',m);document.documentElement.style.colorScheme=m;}catch(e){document.documentElement.setAttribute('data-mui-color-scheme','dark');}})();</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

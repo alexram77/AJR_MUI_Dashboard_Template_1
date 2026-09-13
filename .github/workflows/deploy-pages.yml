@@ -1,0 +1,83 @@
+# Publish the demo to GitHub Pages on every push to main.
+#
+# Gives a public URL at https://<owner>.github.io/<repo>/ with no account
+# anywhere but GitHub.
+#
+# REQUIRES A PUBLIC REPOSITORY on GitHub Free. Pages serves private repos only
+# on Pro/Team/Enterprise; otherwise this builds fine and then fails at
+# configure-pages with "Get Pages site failed: Not Found". Netlify and Vercel
+# both serve a public site from a private repo for free — see the README.
+#
+# ONE-TIME SETUP, and it cannot be automated:
+#
+#   Settings → Pages → Source → "GitHub Actions"
+#
+# Pages has to exist before an Actions deploy can target it. configure-pages
+# below asks the API to create it (`enablement: true`), which works when the
+# push comes from a token allowed to administer the repo — but a GitHub App or
+# a restricted Actions token gets "Resource not accessible by integration" and
+# the run fails at that step with the build already green. Flip the setting
+# once and every push after that publishes on its own.
+name: Deploy demo to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets you publish a branch without merging, from the Actions tab.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let an in-flight deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        # A project site is served from /<repo>/, so the asset URLs and the
+        # router basename both need that prefix.
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: npm run build
+
+      - name: Add SPA fallback
+        # Pages has no rewrite rules, so a deep link like /charts would 404.
+        # Serving index.html as the 404 page hands routing back to the SPA.
+        run: cp dist/index.html dist/404.html
+
+      - uses: actions/configure-pages@v5
+        # Best-effort: creates the Pages site when the token is allowed to.
+        # When it is not, this step fails with "Resource not accessible by
+        # integration" and the one-time setting above is required instead.
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
