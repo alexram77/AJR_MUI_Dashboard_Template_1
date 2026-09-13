@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
+import { BADGE_SIZING, badgeLineHeight } from '../../theme/sizing';
 
 export interface IndicatorBadgeProps {
   icon: ReactElement;
@@ -41,7 +42,7 @@ export function IndicatorBadge({
         alignItems: 'center',
         gap: dense ? 0.5 : 0.75,
         px: dense ? 1 : 1.5,
-        py: dense ? 0.25 : 0.5,
+        minHeight: dense ? BADGE_SIZING.denseHeight : BADGE_SIZING.height,
         borderRadius: 5,
         flexShrink: 0,
         bgcolor: alpha(color, 0.1),
@@ -56,7 +57,18 @@ export function IndicatorBadge({
         }),
       }}
     >
-      <Box sx={{ color, display: 'flex', alignItems: 'center', fontSize: dense ? '0.85rem' : '0.95rem' }}>
+      <Box
+        sx={{
+          color,
+          display: 'flex',
+          alignItems: 'center',
+          // `!important` because the icon is passed in by the caller, who may
+          // have set a size on it; the badge owns this, not the call site.
+          '& svg': {
+            fontSize: `${dense ? BADGE_SIZING.denseIconSize : BADGE_SIZING.iconSize} !important`,
+          },
+        }}
+      >
         {icon}
       </Box>
       <Typography
@@ -64,8 +76,9 @@ export function IndicatorBadge({
         sx={{
           color,
           fontWeight: pulse ? 700 : 600,
-          fontSize: dense ? '0.66rem' : '0.72rem',
-          lineHeight: 1,
+          fontSize: dense ? BADGE_SIZING.denseFontSize : BADGE_SIZING.fontSize,
+          // Fills the pill's inner height so half-leading centres the glyphs.
+          lineHeight: badgeLineHeight(dense),
           whiteSpace: 'nowrap',
         }}
       >

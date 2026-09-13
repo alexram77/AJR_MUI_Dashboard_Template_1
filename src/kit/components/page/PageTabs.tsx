@@ -9,11 +9,12 @@ import type { ReactElement } from 'react';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { TAB_HEIGHT } from '../../theme/customizations';
+import { BADGE_SIZING } from '../../theme/sizing';
 
 export interface PageTabItem<T extends number | string> {
   value: T;
   label: string;
-  /** Small leading icon — pass `sx={{ fontSize: '0.9rem' }}`. */
+  /** Small leading icon. Sized by the tab bar — do not set a size on it. */
   icon?: ReactElement;
   disabled?: boolean;
 }
@@ -32,7 +33,11 @@ export function PageTabs<T extends number | string>({ tabs, value, onChange }: P
       variant="scrollable"
       scrollButtons="auto"
       allowScrollButtonsMobile
-      sx={{ minHeight: TAB_HEIGHT }}
+      sx={{
+        minHeight: TAB_HEIGHT,
+        // The bar sizes its own icons so a page cannot hand in a mismatched one.
+        '& .MuiTab-iconWrapper': { fontSize: `${BADGE_SIZING.iconSize} !important` },
+      }}
     >
       {tabs.map((tab) => (
         <Tab
@@ -42,7 +47,11 @@ export function PageTabs<T extends number | string>({ tabs, value, onChange }: P
           icon={tab.icon}
           iconPosition={tab.icon ? 'start' : undefined}
           disabled={tab.disabled}
-          sx={{ minHeight: TAB_HEIGHT }}
+          sx={{
+        minHeight: TAB_HEIGHT,
+        // The bar sizes its own icons so a page cannot hand in a mismatched one.
+        '& .MuiTab-iconWrapper': { fontSize: `${BADGE_SIZING.iconSize} !important` },
+      }}
         />
       ))}
     </Tabs>

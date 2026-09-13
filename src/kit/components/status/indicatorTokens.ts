@@ -61,12 +61,19 @@ export function stateColor(theme: Theme, state: IndicatorState): string {
 }
 
 /**
- * Whether a state should glow or pulse.
+ * Whether a state's dot should glow.
  *
- * Only `ok` glows — a red glow reads as an active alarm rather than a
- * reported state, and a page where everything pulses has taught the operator
- * to ignore all of it.
+ * Every state that is actually *reporting* glows, in its own colour — a flat
+ * red dot beside a glowing green one reads as two different kinds of thing
+ * rather than two values of one thing.
+ *
+ * The exceptions are the states that are deliberately inert: `checking` (no
+ * reading yet) and `disabled` (switched off). Those stay flat grey, which is
+ * what makes them legible as "nothing to report" at a glance.
+ *
+ * Note this is a steady glow, not an animation. Pulsing is reserved for
+ * `LiveIndicator` and `AlertChip`, where something is actively happening.
  */
 export function shouldGlow(state: IndicatorState): boolean {
-  return state === 'ok';
+  return state !== 'checking' && state !== 'disabled';
 }

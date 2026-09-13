@@ -6,12 +6,22 @@
  */
 import type { Components, Theme } from '@mui/material/styles';
 import { monoFontFamily } from '../themePrimitives';
+import { BADGE_SIZING } from '../sizing';
 
 export const dataDisplayCustomizations: Components<Theme> = {
   MuiChip: {
     styleOverrides: {
-      root: { fontWeight: 600 },
-      sizeSmall: { height: 22, fontSize: '0.68rem' },
+      root: {
+        fontWeight: 600,
+        // Every chip icon is the same size, whatever the chip. Components used
+        // to set this themselves at 0.85 / 0.9 / 1rem, which read as wonky
+        // when two chips sat next to each other.
+        '& .MuiChip-icon': { fontSize: BADGE_SIZING.iconSize },
+      },
+      sizeSmall: {
+        height: BADGE_SIZING.height,
+        fontSize: BADGE_SIZING.fontSize,
+      },
       label: { paddingInline: 8 },
     },
   },

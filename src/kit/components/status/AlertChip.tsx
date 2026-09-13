@@ -35,11 +35,7 @@ export function AlertChip({
   return (
     <Chip
       icon={
-        active ? (
-          <WarningAmberRoundedIcon sx={{ fontSize: '0.85rem !important' }} />
-        ) : (
-          <CheckCircleRoundedIcon sx={{ fontSize: '0.85rem !important' }} />
-        )
+        active ? <WarningAmberRoundedIcon /> : <CheckCircleRoundedIcon />
       }
       label={active ? alertLabel : okLabel}
       size="small"
@@ -48,7 +44,6 @@ export function AlertChip({
         const color = active ? theme.palette[severity].main : theme.palette.success.main;
         return {
           fontWeight: 700,
-          fontSize: '0.7rem',
           bgcolor: alpha(color, 0.12),
           color,
           border: '1px solid',

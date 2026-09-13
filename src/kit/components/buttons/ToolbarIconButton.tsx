@@ -20,11 +20,11 @@ export interface ToolbarIconButtonProps extends Omit<IconButtonProps, 'size'> {
   rel?: string;
 }
 
+// Size and icon scale both come from the theme's MuiIconButton override.
 const BASE_SX: SxProps<Theme> = {
   width: SMALL_CONTROL_HEIGHT,
   height: SMALL_CONTROL_HEIGHT,
   flexShrink: 0,
-  '& svg': { fontSize: '1.1rem' },
 };
 
 export function ToolbarIconButton({

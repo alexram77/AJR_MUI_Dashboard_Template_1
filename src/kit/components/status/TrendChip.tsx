@@ -35,7 +35,7 @@ export function TrendChip({ label, trend, invertColors = false, variant = 'fille
       size="small"
       variant={variant}
       color={color}
-      icon={<Icon sx={{ fontSize: '1rem' }} />}
+      icon={<Icon />}
       label={label}
       sx={{ '& .MuiChip-icon': { ml: 0.25, mr: -0.5 } }}
     />

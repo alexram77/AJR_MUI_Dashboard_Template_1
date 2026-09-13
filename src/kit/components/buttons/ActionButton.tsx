@@ -51,11 +51,8 @@ export function ActionButton({
       disabled={disabled || loading}
       startIcon={loading ? <CircularProgress size={14} color="inherit" /> : startIcon}
       sx={[
-        {
-          minHeight: BUTTON_HEIGHTS[size],
-          whiteSpace: 'nowrap',
-          '& .MuiButton-startIcon > *, & .MuiButton-endIcon > *': { fontSize: '1.05rem' },
-        },
+        // Icon size comes from the theme, so every button in the app matches.
+        { minHeight: BUTTON_HEIGHTS[size], whiteSpace: 'nowrap' },
         ...(Array.isArray(sx) ? sx : [sx]),
       ] as SxProps<Theme>}
       {...rest}

@@ -89,9 +89,9 @@ export default function StatusPage() {
           </Stack>
 
           <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap alignItems="center">
-            <IndicatorBadge icon={<CheckCircleRoundedIcon sx={{ fontSize: '0.95rem' }} />} label="Connected · 24 ms" color="#00e676" />
-            <IndicatorBadge icon={<ScienceRoundedIcon sx={{ fontSize: '0.95rem' }} />} label="Demo mode" color="#ffd740" tooltip="Simulated data — no backend" />
-            <IndicatorBadge icon={<MemoryRoundedIcon sx={{ fontSize: '0.95rem' }} />} label="rig-04" color="#00bcd4" />
+            <IndicatorBadge icon={<CheckCircleRoundedIcon />} label="Connected · 24 ms" color="#00e676" />
+            <IndicatorBadge icon={<ScienceRoundedIcon />} label="Demo mode" color="#ffd740" tooltip="Simulated data — no backend" />
+            <IndicatorBadge icon={<MemoryRoundedIcon />} label="rig-04" color="#00bcd4" />
             <ConnectionChip connected modeLabel="LAN" latencyMs={24} detail="192.168.1.40:8787" />
             <ConnectionChip connected={false} connectLabel="Connect" />
           </Stack>
@@ -102,7 +102,7 @@ export default function StatusPage() {
         <Grid size={{ xs: 12, md: 6 }}>
           <SectionCard
             title="StatusDot"
-            subtitle="Only a healthy service glows — a red glow reads as an alarm rather than a state."
+            subtitle="Every state that is reporting glows in its own colour. Only the deliberately inert ones — a check still in flight, or something switched off — stay flat grey, which is what makes them read as 'nothing to report'."
           >
             <Stack spacing={1.5}>
               {(['ok', 'degraded', 'down', 'checking'] as const).map((state) => (

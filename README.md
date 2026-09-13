@@ -2,11 +2,6 @@
 
 **Live demo → https://alexram77.github.io/AJR_MUI_Dashboard_Template_1/**
 
-> **Working on this repo, or on a project that uses this kit?**
-> Read [`AGENTS.md`](AGENTS.md) first — it is short, and it exists to stop you rebuilding components
-> that already exist here. Claude Code picks up the same content from [`CLAUDE.md`](CLAUDE.md)
-> automatically.
-
 A shared MUI dashboard kit — theme, app shell and plug-and-play blocks — so a new dashboard starts
 from a settled house style instead of rebuilding one.
 
@@ -154,7 +149,7 @@ src/kit/
 ```
 
 ★ The three libraries that exist specifically to stop visual drift. Use them; never hand-roll a
-button, a scrollbar rule, or a coloured status dot. See [`AGENTS.md`](AGENTS.md#the-three-libraries-that-exist-specifically-to-stop-drift).
+button, a scrollbar rule, or a coloured status dot — see [Contributing](#contributing-and-a-note-for-ai-assistants).
 
 Every folder has an `index.ts` barrel, and `src/kit/index.ts` re-exports the lot. Import at
 whatever granularity suits you:
@@ -235,6 +230,38 @@ writing one, that is the signal a block is missing — see
 
 ---
 
+## Contributing (and a note for AI assistants)
+
+**Use the components in `src/kit` — don't write new ones that do the same thing.** That is the
+whole point of the kit, and a near-duplicate is worse than no component: it looks right on its own
+and wrong beside the real one.
+
+Three groups exist specifically to stop that drift, each with one token file behind it:
+
+| Need | Import from | Instead of |
+|---|---|---|
+| Any button, icon button, menu, button row | `@kit/components/buttons` | MUI `Button`/`IconButton` in a page |
+| Any scrolling region | `@kit/components/scroll` | writing `::-webkit-scrollbar` rules |
+| Anything reporting state — health, freshness, trend, capacity, liveness, counts | `@kit/components/status` | a bespoke coloured dot or chip |
+
+Buttons take an **intent** (`primary`, `danger`, `ghost`…), not a variant and colour. Sizes and
+icon scales come from `src/kit/theme/sizing.ts` and are applied as global MUI overrides — so never
+set `fontSize` on a chip or a button icon in a component. That is exactly how six different chip
+sizes ended up on one page.
+
+Everything else: page shells in `components/page`, cards in `components/cards`, dialogs and
+loading/error/empty states in `components/feedback`, tables in `components/data`, charts in
+`components/charts`, meters in `components/meters`. Colours and spacing come from `@kit/theme`; a
+hex literal in a component is a bug.
+
+Conventions worth keeping (each came out of a real deployment going wrong): missing data renders as
+`—`, never `0`; loading, error and empty are three distinct states; a health check in flight is not
+a failure; simulated data is amber, never green. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) has
+the rest, plus how to add a block.
+
+Before opening a PR: `npm run verify`, then `npm run test:smoke` and `npm run test:mobile` against
+a served build.
+
 ## Colour scheme
 
 **Dark is the default, always.** The OS preference is deliberately not consulted: these dashboards
@@ -280,8 +307,5 @@ it, register its theme customizations through the escape hatch rather than forki
 
 ## Docs
 
-- [`AGENTS.md`](AGENTS.md) — **read first.** What to import, what never to rebuild, what to run
-  before calling it done. [`CLAUDE.md`](CLAUDE.md) is the same content, loaded automatically by
-  Claude Code.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — layer rules, conventions, adding a block
 - [`docs/MOBILE.md`](docs/MOBILE.md) — the responsive contract and how it is enforced

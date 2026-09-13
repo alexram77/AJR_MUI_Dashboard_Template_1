@@ -98,19 +98,19 @@ export default function SensorsPage() {
         }
       >
         <IndicatorBadge
-          icon={<SensorsRoundedIcon sx={{ fontSize: '0.95rem' }} />}
+          icon={<SensorsRoundedIcon />}
           label={`${CHANNELS.length} channels`}
           color={SECTION_COLORS.environment}
           tooltip="Declared channel definitions"
         />
         <IndicatorBadge
-          icon={<MemoryRoundedIcon sx={{ fontSize: '0.95rem' }} />}
+          icon={<MemoryRoundedIcon />}
           label={`CPU ${fmtNumber(snapshot.readings['host.cpu_temp']?.value, 1)}°C`}
           color={faulted ? SECTION_COLORS.safety : SECTION_COLORS.system}
           tooltip="Host core temperature"
         />
         <IndicatorBadge
-          icon={<BoltRoundedIcon sx={{ fontSize: '0.95rem' }} />}
+          icon={<BoltRoundedIcon />}
           label={`${fmtNumber(snapshot.readings['power.voltage']?.value, 2)} V`}
           color={SECTION_COLORS.power}
           tooltip="Battery bus voltage"

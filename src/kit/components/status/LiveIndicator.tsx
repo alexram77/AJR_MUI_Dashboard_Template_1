@@ -11,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { monoFamily } from '../../theme/styleTokens';
+import { BADGE_SIZING, DOT_SIZE } from '../../theme/sizing';
 import { fmtAge } from '../../utils/format';
 
 export type LiveState = 'live' | 'paused' | 'stale';
@@ -46,12 +47,17 @@ export function LiveIndicator({ state, ageSeconds, label, dotOnly = false }: Liv
       <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.75, cursor: 'default' }}>
         <Box
           sx={{
-            width: 8,
-            height: 8,
+            width: DOT_SIZE,
+            height: DOT_SIZE,
             borderRadius: '50%',
             flexShrink: 0,
             bgcolor: color,
-            // Only a live stream animates. A paused dot that pulses is a lie.
+            // Matches StatusDot: a reporting state glows in its own colour,
+            // and only the deliberately inert one stays flat.
+            boxShadow: state === 'paused' ? 'none' : `0 0 6px ${color}`,
+            transition: 'background-color 0.3s, box-shadow 0.3s',
+            // Only a live stream animates on top of that. A paused dot that
+            // pulses is a lie.
             ...(state === 'live' && {
               animation: 'livePulse 1.8s ease-in-out infinite',
               '@keyframes livePulse': {
@@ -64,7 +70,7 @@ export function LiveIndicator({ state, ageSeconds, label, dotOnly = false }: Liv
         {!dotOnly && (
           <Typography
             variant="caption"
-            sx={{ ...monoFamily, fontSize: '0.65rem', fontWeight: 700, letterSpacing: 0.6, color }}
+            sx={{ ...monoFamily, fontSize: BADGE_SIZING.fontSize, fontWeight: 700, letterSpacing: 0.6, color }}
           >
             {text}
             {ageSeconds != null && state !== 'live' && ` · ${fmtAge(ageSeconds)}`}

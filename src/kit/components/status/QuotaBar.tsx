@@ -9,6 +9,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { monoFamily } from '../../theme/styleTokens';
+import { BADGE_SIZING } from '../../theme/sizing';
 import { toneForThresholds, toneToColor } from '../../utils/color';
 
 export interface QuotaBarProps {
@@ -83,7 +84,7 @@ export function QuotaBar({
           variant="caption"
           sx={{
             ...monoFamily,
-            fontSize: dense ? '0.65rem' : '0.72rem',
+            fontSize: dense ? BADGE_SIZING.denseFontSize : BADGE_SIZING.fontSize,
             color: 'text.secondary',
             whiteSpace: 'nowrap',
             flexShrink: 0,

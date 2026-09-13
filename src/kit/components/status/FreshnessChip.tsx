@@ -23,7 +23,7 @@ export function FreshnessChip({ asof, budgetSeconds, label }: FreshnessChipProps
   const age = ageSeconds(asof);
 
   if (age === null) {
-    return <Chip size="small" variant="outlined" label={`${prefix}—`} sx={{ fontSize: '0.65rem' }} />;
+    return <Chip size="small" variant="outlined" label={`${prefix}—`} />;
   }
 
   const stale = age > budgetSeconds;
@@ -35,7 +35,6 @@ export function FreshnessChip({ asof, budgetSeconds, label }: FreshnessChipProps
         variant="outlined"
         color={stale ? 'warning' : 'success'}
         label={`${prefix}${fmtAge(age)}`}
-        sx={{ fontSize: '0.65rem' }}
       />
     </Tooltip>
   );

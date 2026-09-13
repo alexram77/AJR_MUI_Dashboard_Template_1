@@ -9,6 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import { monoFamily } from '../../theme/styleTokens';
+import { BADGE_SIZING, DOT_SIZE } from '../../theme/sizing';
 import { shouldGlow, stateColor } from './indicatorTokens';
 import type { IndicatorState } from './indicatorTokens';
 
@@ -38,13 +39,15 @@ export function StatusDot({ name, state, detail, hideLabel = false }: StatusDotP
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'default' }}>
         <Box
           sx={{
-            width: 7,
-            height: 7,
+            width: DOT_SIZE,
+            height: DOT_SIZE,
             borderRadius: '50%',
             flexShrink: 0,
             bgcolor: color,
+            // Reporting states glow in their own colour; `checking` and
+            // `disabled` stay flat, which is what makes them read as inert.
             boxShadow: glow ? `0 0 6px ${color}` : 'none',
-            transition: 'background-color 0.3s',
+            transition: 'background-color 0.3s, box-shadow 0.3s',
           }}
         />
         {!hideLabel && (
@@ -52,9 +55,11 @@ export function StatusDot({ name, state, detail, hideLabel = false }: StatusDotP
             variant="caption"
             sx={{
               ...monoFamily,
-              fontSize: '0.67rem',
-              color: glow ? 'text.secondary' : color,
-              fontWeight: glow ? 400 : 600,
+              fontSize: BADGE_SIZING.fontSize,
+              // A healthy service names itself quietly; anything else is worth
+              // reading, so it takes the state's colour and more weight.
+              color: state === 'ok' ? 'text.secondary' : color,
+              fontWeight: state === 'ok' ? 400 : 600,
               display: { xs: 'none', lg: 'block' },
             }}
           >

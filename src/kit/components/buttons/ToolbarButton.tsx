@@ -18,10 +18,11 @@ export interface ToolbarButtonProps extends Omit<ButtonProps, 'size'> {
   loading?: boolean;
 }
 
+// Icon size comes from the theme's MuiButton override, shared with every
+// other button, so a toolbar row cannot drift from a form row.
 const BASE_SX: SxProps<Theme> = {
   whiteSpace: 'nowrap',
   flexShrink: 0,
-  '& .MuiButton-startIcon > *, & .MuiButton-endIcon > *': { fontSize: '1rem' },
 };
 
 export function ToolbarButton({

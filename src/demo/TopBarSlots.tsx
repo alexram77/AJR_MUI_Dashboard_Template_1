@@ -49,7 +49,7 @@ export function DemoTopBarStatus() {
       <ConnectionChip
         connected
         modeLabel="DEMO"
-        modeIcon={<CloudRoundedIcon sx={{ fontSize: '0.9rem !important' }} />}
+        modeIcon={<CloudRoundedIcon />}
         latencyMs={24}
         detail="Simulated data — no backend"
         simulated

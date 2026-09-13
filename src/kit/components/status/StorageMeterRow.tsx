@@ -11,6 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { ellipsis } from '../../theme/styleTokens';
+import { BADGE_SIZING } from '../../theme/sizing';
 import { fmtBytes } from '../../utils/format';
 import { toneForThresholds, toneToColor } from '../../utils/color';
 
@@ -54,16 +55,26 @@ export function StorageMeterRow({
   return (
     <Box sx={{ flex: '1 1 180px', minWidth: 160, maxWidth: 300 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.25 }}>
-        {icon && <Box sx={{ display: 'flex', color: 'text.secondary', fontSize: '0.95rem' }}>{icon}</Box>}
+        {icon && (
+          <Box
+            sx={{
+              display: 'flex',
+              color: 'text.secondary',
+              '& svg': { fontSize: `${BADGE_SIZING.iconSize} !important` },
+            }}
+          >
+            {icon}
+          </Box>
+        )}
 
-        <Typography sx={{ ...ellipsis, fontSize: '0.72rem', fontWeight: 600, flex: 1 }}>
+        <Typography sx={{ ...ellipsis, fontSize: BADGE_SIZING.fontSize, fontWeight: 600, flex: 1 }}>
           {label}
           {tag ? ` · ${tag}` : ''}
         </Typography>
 
         <Typography
           sx={{
-            fontSize: '0.66rem',
+            fontSize: BADGE_SIZING.denseFontSize,
             flexShrink: 0,
             color: tone === 'bad' ? 'error.main' : 'text.secondary',
           }}

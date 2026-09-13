@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import { BADGE_SIZING } from '../../theme/sizing';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 
 export interface ConnectionChipProps {
@@ -69,7 +70,7 @@ export function ConnectionChip({
         label={
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.25 }}>
             {modeLabel}
-            {onClick && <KeyboardArrowDownRoundedIcon sx={{ fontSize: '0.85rem' }} />}
+            {onClick && <KeyboardArrowDownRoundedIcon sx={{ fontSize: BADGE_SIZING.iconSize }} />}
           </Box>
         }
         size="small"

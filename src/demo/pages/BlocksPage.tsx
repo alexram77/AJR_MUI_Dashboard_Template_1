@@ -21,9 +21,9 @@ import { hoursAgo, minutesAgo } from '@demo/data/timestamps';
 type TabValue = 'cards' | 'shells' | 'scroll';
 
 const TABS = [
-  { value: 'cards' as const, label: 'Cards', icon: <GridViewRoundedIcon sx={{ fontSize: '0.9rem' }} /> },
-  { value: 'shells' as const, label: 'Shells', icon: <LayersRoundedIcon sx={{ fontSize: '0.9rem' }} /> },
-  { value: 'scroll' as const, label: 'Scroll panels', icon: <ViewAgendaRoundedIcon sx={{ fontSize: '0.9rem' }} /> },
+  { value: 'cards' as const, label: 'Cards', icon: <GridViewRoundedIcon /> },
+  { value: 'shells' as const, label: 'Shells', icon: <LayersRoundedIcon /> },
+  { value: 'scroll' as const, label: 'Scroll panels', icon: <ViewAgendaRoundedIcon /> },
 ];
 
 /** Cards tab — every card variant side by side. */
