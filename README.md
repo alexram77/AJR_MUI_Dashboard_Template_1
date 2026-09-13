@@ -58,16 +58,17 @@ Published at **https://alexram77.github.io/AJR_MUI_Dashboard_Template_1/**.
 > Netlify or Vercel below; both serve a public site from a private repo on their free tiers.
 
 [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) is committed and runs on
-every push to `main`. It needs **one setting flipped by hand, once**:
+every push to `main`, so the site above tracks `main` with nothing to do by hand.
+
+If you fork this, **one setting has to be flipped by hand, once**:
 
 > **Settings → Pages → Source → "GitHub Actions"**
 
-Then re-run the latest deploy from the **Actions** tab (or push anything to `main`).
-
-That step cannot be automated away. Pages has to exist before an Actions deploy can target it, and
-creating it over the API needs a token allowed to administer the repo — the workflow asks
-(`enablement: true`), but a GitHub App or a restricted Actions token gets *"Resource not accessible
-by integration"* and the run fails there with the build already green.
+Then re-run the latest deploy from the **Actions** tab (or push anything to `main`). That step
+cannot be automated away: the Pages site has to exist before an Actions deploy can target it, and
+creating it over the API needs a token allowed to administer the repo, which the Actions token is
+not — it gets *"Resource not accessible by integration"* and the run fails there with the build
+already green.
 
 You get `https://<owner>.github.io/<repo>/`. The workflow sets `BASE_PATH` so assets resolve under
 the sub-path, and copies `index.html` to `404.html` — Pages has no rewrite rules, so that is what
