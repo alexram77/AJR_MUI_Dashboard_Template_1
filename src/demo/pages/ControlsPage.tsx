@@ -13,7 +13,7 @@ import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer, PageToolbar } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { ActionButton, ButtonRow, MenuButton, SegmentedControl, ToolbarButton, ToolbarIconButton } from '@kit/components/buttons';
 import { SearchField } from '@kit/components/controls';
@@ -40,21 +40,15 @@ export default function ControlsPage() {
 
   return (
     <PageContainer
-      header={
-        <PageHeader
-          title="Controls & Dialogs"
-          subtitle="Toolbar actions share one height from the theme's MuiButton sizeSmall override — which is what keeps a mixed row of buttons and icon buttons aligned with no per-call sx."
-          actions={
-            <Stack direction="row" spacing={1} alignItems="center">
-              <ToolbarIconButton tooltip="Refresh">
-                <RefreshRoundedIcon />
-              </ToolbarIconButton>
-              <ToolbarButton variant="contained" startIcon={<AddRoundedIcon />}>
-                New
-              </ToolbarButton>
-            </Stack>
-          }
-        />
+      toolbar={
+        <PageToolbar>
+          <ToolbarIconButton tooltip="Refresh">
+            <RefreshRoundedIcon />
+          </ToolbarIconButton>
+          <ToolbarButton variant="contained" startIcon={<AddRoundedIcon />}>
+            New
+          </ToolbarButton>
+        </PageToolbar>
       }
     >
       <SectionCard

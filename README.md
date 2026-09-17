@@ -132,7 +132,7 @@ src/kit/
 │   ├── status/     ★   StatusDot, IndicatorBadge, AlertChip, ConnectionChip, TrendChip,
 │   │                   FreshnessChip, LiveIndicator, CountBadge, QuotaBar,
 │   │                   StorageMeterRow, StatusBar, indicatorTokens
-│   ├── page/           PageContainer, PageHeader, PageTabs, SplitPane
+│   ├── page/           PageContainer, PageToolbar, PageTabs, SplitPane
 │   ├── cards/          SectionCard, MetricCard, StatCard, SidebarCard
 │   ├── controls/       SearchField
 │   ├── feedback/       ConfirmDialog, FullScreenDialog, StateBlock, EmptyState
@@ -216,7 +216,7 @@ export const NAV: NavConfig = {
 ```tsx
 export default function OverviewPage() {
   return (
-    <PageContainer header={<PageHeader title="Overview" subtitle="…" />}>
+    <PageContainer>
       <SectionCard title="Throughput">
         <AreaSeriesChart rows={rows} xKey="day" series={[{ key: 'value' }]} />
       </SectionCard>
@@ -224,6 +224,10 @@ export default function OverviewPage() {
   );
 }
 ```
+
+The page never states its own name: the top bar takes the title and its one-line description from
+the nav entry, so the two cannot drift apart and no page spends a band of vertical space repeating
+what the bar already says. A page needing controls of its own passes a `<PageToolbar>` instead.
 
 A page should contain no layout CSS, no bespoke card, and no colour literal. If you find yourself
 writing one, that is the signal a block is missing — see

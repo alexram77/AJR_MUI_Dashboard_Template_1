@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { KeyValueList } from '@kit/components/data';
 import { amber, bodyMuted, brand, captionMuted, gray, green, monoFamily, red, statusColors } from '@kit/theme';
@@ -62,12 +62,6 @@ const TYPE_SCALE = [
 export default function ThemePage() {
   return (
     <PageContainer
-      header={
-        <PageHeader
-          title="Theme Tokens"
-          subtitle="Everything here renders from the same exports components import. Retheming an app is a one-file edit to themePrimitives.ts — never a hex value in a component."
-        />
-      }
     >
       <SectionCard title="Colour ramps" subtitle="Brand first; the semantic ramps only define the shades actually referenced.">
         <Stack spacing={3}>

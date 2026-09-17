@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 import MemoryRoundedIcon from '@mui/icons-material/MemoryRounded';
 import SensorsRoundedIcon from '@mui/icons-material/SensorsRounded';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer, PageToolbar } from '@kit/components/page';
 import { ChannelCard, ChannelSection, trendFromHistory } from '@kit/components/sensors';
 import type { MeterType } from '@kit/components/sensors';
 import { AlertChip, IndicatorBadge, StatusBar } from '@kit/components/status';
@@ -76,17 +76,13 @@ export default function SensorsPage() {
   return (
     <PageContainer
       wide
-      header={
-        <PageHeader
-          title="Sensors"
-          subtitle="Declare a channel — id, scale, healthy band, default meter — and the card, meter, status colouring and trend all follow. Updating live from a simulated rig."
-          actions={
-            <FormControlLabel
-              control={<Switch checked={faulted} onChange={(_, checked) => setFaulted(checked)} />}
-              label={<Typography sx={captionMuted}>Simulate fault</Typography>}
-            />
-          }
-        />
+      toolbar={
+        <PageToolbar>
+          <FormControlLabel
+            control={<Switch checked={faulted} onChange={(_, checked) => setFaulted(checked)} />}
+            label={<Typography sx={captionMuted}>Simulate fault</Typography>}
+          />
+        </PageToolbar>
       }
     >
       <StatusBar

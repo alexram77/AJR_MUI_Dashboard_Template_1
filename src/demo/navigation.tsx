@@ -36,6 +36,7 @@ export const NAV: NavConfig = {
         {
           label: 'Overview',
           href: '/overview',
+          description: 'Stat row, charts and a table',
           icon: <DashboardRoundedIcon fontSize="small" />,
           primary: true,
         },
@@ -47,6 +48,7 @@ export const NAV: NavConfig = {
         {
           label: 'Cards & Shells',
           href: '/blocks',
+          description: 'The containers everything renders inside',
           icon: <WidgetsRoundedIcon fontSize="small" />,
           primary: true,
           shortLabel: 'Blocks',
@@ -54,22 +56,26 @@ export const NAV: NavConfig = {
         {
           label: 'Charts',
           href: '/charts',
+          description: 'Theme-aware Recharts wrappers',
           icon: <InsightsRoundedIcon fontSize="small" />,
         },
         {
           label: 'Meters',
           href: '/meters',
+          description: 'Hand-drawn SVG instruments',
           icon: <SpeedRoundedIcon fontSize="small" />,
         },
         {
           label: 'Tables & Detail',
           href: '/tables',
+          description: 'Column-driven table and detail list',
           icon: <TableChartRoundedIcon fontSize="small" />,
           shortLabel: 'Tables',
         },
         {
           label: 'Controls & Dialogs',
           href: '/controls',
+          description: 'Buttons, inputs and dialogs',
           icon: <TuneRoundedIcon fontSize="small" />,
           primary: true,
           shortLabel: 'Controls',
@@ -77,11 +83,13 @@ export const NAV: NavConfig = {
         {
           label: 'Status',
           href: '/status',
+          description: 'Honest-by-default indicators',
           icon: <MonitorHeartRoundedIcon fontSize="small" />,
         },
         {
           label: 'Split View',
           href: '/split',
+          description: 'Rail beside content',
           icon: <VerticalSplitRoundedIcon fontSize="small" />,
         },
       ],
@@ -92,12 +100,14 @@ export const NAV: NavConfig = {
         {
           label: 'Sensors',
           href: '/sensors',
+          description: 'Live channels, meters and trends',
           icon: <SensorsRoundedIcon fontSize="small" />,
           primary: true,
         },
         {
           label: 'Block Builder',
           href: '/builder',
+          description: 'Node graph editor',
           icon: <AccountTreeRoundedIcon fontSize="small" />,
           primary: true,
           shortLabel: 'Builder',
@@ -105,6 +115,7 @@ export const NAV: NavConfig = {
         {
           label: 'Terminal',
           href: '/terminal',
+          description: 'xterm behind a pluggable transport',
           icon: <TerminalRoundedIcon fontSize="small" />,
         },
       ],
@@ -115,6 +126,7 @@ export const NAV: NavConfig = {
         {
           label: 'Theme Tokens',
           href: '/theme',
+          description: 'Colours, type, spacing and sx tokens',
           icon: <PaletteRoundedIcon fontSize="small" />,
         },
       ],

@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer, PageToolbar } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { GaugeMeter, LevelMeter, MeterCard, StateMeter, ThermometerMeter } from '@kit/components/meters';
 import { bodyMuted, captionMuted } from '@kit/theme';
@@ -24,22 +24,18 @@ export default function MetersPage() {
 
   return (
     <PageContainer
-      header={
-        <PageHeader
-          title="Meters"
-          subtitle="Hand-drawn SVG rather than a chart library, for exact control over concentric arcs, tick placement and optimal-range brackets."
-          actions={
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: { xs: '100%', md: 260 } }}>
-              <Typography sx={captionMuted}>Drive all</Typography>
-              <Slider
-                size="small"
-                value={position}
-                onChange={(_, next) => setPosition(next as number)}
-                aria-label="Meter position"
-              />
-            </Stack>
-          }
-        />
+      toolbar={
+        <PageToolbar>
+          <Stack direction="row" spacing={2} alignItems="center" sx={{ minWidth: { xs: '100%', md: 260 } }}>
+            <Typography sx={captionMuted}>Drive all</Typography>
+            <Slider
+              size="small"
+              value={position}
+              onChange={(_, next) => setPosition(next as number)}
+              aria-label="Meter position"
+            />
+          </Stack>
+        </PageToolbar>
       }
     >
       <SectionCard

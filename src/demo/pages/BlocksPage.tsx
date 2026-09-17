@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import LayersRoundedIcon from '@mui/icons-material/LayersRounded';
 import ViewAgendaRoundedIcon from '@mui/icons-material/ViewAgendaRounded';
-import { PageContainer, PageHeader, PageTabs } from '@kit/components/page';
+import { PageContainer, PageTabs } from '@kit/components/page';
 import { ScrollArea, ScrollPanel, scrollbarSx } from '@kit/components/scroll';
 import { MetricCard, SectionCard, SidebarCard, StatCard } from '@kit/components/cards';
 import { FreshnessChip, TrendChip } from '@kit/components/status';
@@ -203,12 +203,6 @@ export default function BlocksPage() {
   return (
     <PageContainer
       tabs={<PageTabs tabs={TABS} value={tab} onChange={setTab} />}
-      header={
-        <PageHeader
-          title="Cards & Shells"
-          subtitle="The containers everything else renders inside. Every page in a kit app is one PageContainer wrapping a stack of cards."
-        />
-      }
     >
       {tab === 'cards' && <CardsTab />}
       {tab === 'shells' && <ShellsTab />}

@@ -5,7 +5,7 @@
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import {
   AlertChip,
@@ -42,12 +42,6 @@ const FRESHNESS_CASES = [
 export default function StatusPage() {
   return (
     <PageContainer
-      header={
-        <PageHeader
-          title="Status"
-          subtitle="Honest-by-default indicators: 'checking' is not 'down', an unknown age is not a fresh one, and a metric where down is good does not render red."
-        />
-      }
     >
       <StatusBar label="Pipeline" right={<FreshnessChip asof={minutesAgo(2)} budgetSeconds={300} />}>
         <StatusDot name="scheduler" state="ok" detail="next fire in 3m" />

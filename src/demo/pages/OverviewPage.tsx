@@ -7,7 +7,7 @@
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer } from '@kit/components/page';
 import { SectionCard, StatCard } from '@kit/components/cards';
 import { AreaSeriesChart, BarSeriesChart } from '@kit/components/charts';
 import { DataTable } from '@kit/components/data';
@@ -64,15 +64,7 @@ const COLUMNS: DataColumn<ServiceRow>[] = [
 
 export default function OverviewPage() {
   return (
-    <PageContainer
-      header={
-        <PageHeader
-          title="Overview"
-          subtitle="The standard dashboard page — a stat row, a comparison chart, a composition chart and a table, composed entirely from kit blocks."
-          actions={<FreshnessChip asof={minutesAgo(12)} budgetSeconds={3600} label="metrics" />}
-        />
-      }
-    >
+    <PageContainer>
       <StatusBar label="Services" right={<FreshnessChip asof={minutesAgo(4)} budgetSeconds={600} />}>
         <StatusDot name="ingest-gateway" state="ok" detail="84ms p95" />
         <StatusDot name="scoring-api" state="degraded" detail="318ms p95, 0.9% errors" />

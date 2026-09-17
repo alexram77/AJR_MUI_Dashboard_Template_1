@@ -1,7 +1,10 @@
 /**
  * The standard page shell: one bordered card filling the area beneath the top
- * bar, with an optional tabs row, an optional header band, and a body that
+ * bar, with an optional tabs row, an optional toolbar row, and a body that
  * scrolls internally.
+ *
+ * The card carries no title — the top bar already names the page, from the
+ * nav declaration.
  *
  * Pages own their content and nothing else — frame, padding, alignment and
  * scrolling are standardised here. Never re-style this per page; if a page
@@ -12,8 +15,8 @@ import Box from '@mui/material/Box';
 import { CONTENT_MAX_WIDTH, PAGE_CARD_SX } from './pageCardSx';
 
 export interface PageContainerProps {
-  /** Header band — normally a `<PageHeader/>`. */
-  header?: ReactNode;
+  /** Controls row for the whole page — normally a `<PageToolbar/>`. */
+  toolbar?: ReactNode;
   /** Tabs row, rendered as the card's first line — normally a `<PageTabs/>`. */
   tabs?: ReactNode;
   /** Body content, laid out as a vertical grid with the standard gap. */
@@ -28,7 +31,7 @@ export interface PageContainerProps {
 }
 
 export function PageContainer({
-  header,
+  toolbar,
   tabs,
   children,
   wide = false,
@@ -40,17 +43,17 @@ export function PageContainer({
         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 2, flexShrink: 0 }}>{tabs}</Box>
       )}
 
-      {header && (
+      {toolbar && (
         <Box
           sx={{
             px: { xs: 1.5, sm: 2, md: 3 },
-            py: { xs: 1.75, md: 2.25 },
+            py: { xs: 1, md: 1.25 },
             borderBottom: 1,
             borderColor: 'divider',
             flexShrink: 0,
           }}
         >
-          {header}
+          {toolbar}
         </Box>
       )}
 

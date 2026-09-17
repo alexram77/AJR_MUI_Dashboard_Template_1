@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer, PageToolbar } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { AreaSeriesChart, BarSeriesChart, LineSeriesChart, Sparkline } from '@kit/components/charts';
 import { SegmentedControl } from '@kit/components/buttons';
@@ -38,19 +38,15 @@ export default function ChartsPage() {
   return (
     <PageContainer
       wide
-      header={
-        <PageHeader
-          title="Charts"
-          subtitle="Thin wrappers over Recharts. Colours, axes, grid and tooltips all resolve from the live theme, so charts restyle with the app."
-          actions={
-            <SegmentedControl
-              options={RANGES}
-              value={range}
-              onChange={setRange}
-              ariaLabel="Chart window"
-            />
-          }
-        />
+      toolbar={
+        <PageToolbar>
+          <SegmentedControl
+            options={RANGES}
+            value={range}
+            onChange={setRange}
+            ariaLabel="Chart window"
+          />
+        </PageToolbar>
       }
     >
       <SectionCard

@@ -9,5 +9,5 @@ export { TopBar } from './TopBar';
 export type { TopBarProps } from './TopBar';
 export { BottomNav } from './BottomNav';
 export { NavigationProvider, useNavigation } from './NavigationContext';
-export { usePageTitle } from './usePageTitle';
+export { usePageDescription, usePageTitle } from './usePageMeta';
 export type { BrandConfig, BuildInfo, NavConfig, NavItem, NavSection } from './types';

@@ -4,8 +4,7 @@
 import { useMemo, useState } from 'react';
 import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import { PageContainer, PageHeader } from '@kit/components/page';
+import { PageContainer, PageToolbar } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { DataTable, KeyValueList } from '@kit/components/data';
 import type { DataColumn } from '@kit/components/data';
@@ -92,17 +91,11 @@ export default function TablesPage() {
   return (
     <PageContainer
       wide
-      header={
-        <PageHeader
-          title="Tables & Detail"
-          subtitle="DataTable is column-driven and generic over the row type, so `render` receives a fully typed row. Click a row to load it into the detail panel."
-          actions={
-            <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
-              <SearchField value={query} onChange={setQuery} placeholder="Filter services…" />
-              <SegmentedControl options={FILTERS} value={filter} onChange={setFilter} ariaLabel="Health filter" />
-            </Stack>
-          }
-        />
+      toolbar={
+        <PageToolbar>
+          <SearchField value={query} onChange={setQuery} placeholder="Filter services…" />
+          <SegmentedControl options={FILTERS} value={filter} onChange={setFilter} ariaLabel="Health filter" />
+        </PageToolbar>
       }
     >
       <SectionCard

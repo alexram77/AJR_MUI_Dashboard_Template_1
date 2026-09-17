@@ -8,11 +8,10 @@
  */
 import { useMemo, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import TerminalRoundedIcon from '@mui/icons-material/TerminalRounded';
 import { SplitPane } from '@kit/components/page';
-import { PageHeader } from '@kit/components/page';
+import { PageToolbar } from '@kit/components/page';
 import {
   CommandSidebar,
   TerminalPanel,
@@ -68,23 +67,17 @@ export default function TerminalPage() {
 
   return (
     <SplitPane rail={rail} railWidth={260}>
-      <Box sx={{ px: { xs: 2, md: 3 }, py: 1.75, borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}>
-        <PageHeader
-          title="Terminal"
-          subtitle="An xterm panel fed by a pluggable transport. This one runs entirely in the browser; createTtydTransport points the same panel at a real shell."
-          actions={
-            <Stack direction="row" spacing={1.5} alignItems="center">
-              <StatusDot name={status} state={STATUS_STATE[status]} detail="local transport" />
-              <ToolbarButton
-                variant="outlined"
-                startIcon={<TerminalRoundedIcon />}
-                onClick={() => run('help')}
-              >
-                Run help
-              </ToolbarButton>
-            </Stack>
-          }
-        />
+      <Box sx={{ px: { xs: 2, md: 3 }, py: 1, borderBottom: 1, borderColor: 'divider', flexShrink: 0 }}>
+        <PageToolbar>
+          <StatusDot name={status} state={STATUS_STATE[status]} detail="local transport" />
+          <ToolbarButton
+            variant="outlined"
+            startIcon={<TerminalRoundedIcon />}
+            onClick={() => run('help')}
+          >
+            Run help
+          </ToolbarButton>
+        </PageToolbar>
       </Box>
 
       {/* The panel fills whatever height is left; xterm needs a resolved size,

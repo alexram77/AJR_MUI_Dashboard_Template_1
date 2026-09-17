@@ -11,6 +11,12 @@ import type { ReactNode } from 'react';
 export interface NavItem {
   /** Sidebar label, and the TopBar page title when this route is active. */
   label: string;
+  /**
+   * One short line shown beside the title in the top bar — a few words, not a
+   * sentence. It shares a 56px bar with the status slot, so anything longer is
+   * truncated rather than wrapped.
+   */
+  description?: string;
   /** Route path. Matched exactly for selection. */
   href: string;
   /** Leading icon — pass `fontSize="small"` for the correct scale. */
@@ -44,6 +50,10 @@ export interface NavConfig {
    * Returns `undefined` to fall through to an empty title.
    */
   resolveTitle?: (pathname: string) => string | undefined;
+  /** Top-bar descriptions for routes that are not in the sidebar. */
+  extraDescriptions?: Record<string, string>;
+  /** Last-resort description resolver for dynamic routes. */
+  resolveDescription?: (pathname: string) => string | undefined;
 }
 
 /** Sidebar wordmark. */
