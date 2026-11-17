@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+import type { Breakpoint } from '@mui/material/styles';
 import { monoFamily } from '../../theme/styleTokens';
 import { BADGE_SIZING, DOT_SIZE } from '../../theme/sizing';
 import { shouldGlow, stateColor } from './indicatorTokens';
@@ -24,9 +25,16 @@ export interface StatusDotProps {
   detail?: string;
   /** Hide the text label (useful in tight top bars). */
   hideLabel?: boolean;
+  /**
+   * Narrowest breakpoint at which the label shows; below it only the dot
+   * (with its tooltip) remains. Defaults to `lg`, which suits a crowded top
+   * bar. Pass `false` where the name is the point — a row of services on a
+   * page — so phones see the names too.
+   */
+  labelFrom?: Breakpoint | false;
 }
 
-export function StatusDot({ name, state, detail, hideLabel = false }: StatusDotProps) {
+export function StatusDot({ name, state, detail, hideLabel = false, labelFrom = 'lg' }: StatusDotProps) {
   const theme = useTheme();
 
   // Colour and glow both come from the shared indicator tokens, so this dot
@@ -60,7 +68,7 @@ export function StatusDot({ name, state, detail, hideLabel = false }: StatusDotP
               // reading, so it takes the state's colour and more weight.
               color: state === 'ok' ? 'text.secondary' : color,
               fontWeight: state === 'ok' ? 400 : 600,
-              display: { xs: 'none', lg: 'block' },
+              display: labelFrom === false ? 'block' : { xs: 'none', [labelFrom]: 'block' },
             }}
           >
             {name}
