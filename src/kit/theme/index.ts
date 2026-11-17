@@ -10,8 +10,8 @@ export type { ColorScheme } from './initColorScheme';
 export type { AppThemeProps } from './AppTheme';
 export { ColorModeToggle } from './ColorModeToggle';
 export type { ColorModeToggleProps } from './ColorModeToggle';
-export { useChartTokens, seriesColor } from './chartTokens';
-export type { ChartTokens } from './chartTokens';
+export { useChartTokens, useChartScheme, seriesColor, CHART_SERIES } from './chartTokens';
+export type { ChartTokens, ChartScheme } from './chartTokens';
 export * from './styleTokens';
 export {
   brand,

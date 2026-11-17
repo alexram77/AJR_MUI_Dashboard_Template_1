@@ -2,7 +2,7 @@
  * Grouped or stacked bar chart, for categorical comparisons and counts.
  */
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
-import { useChartTokens, seriesColor } from '../../theme/chartTokens';
+import { useChartTokens } from '../../theme/chartTokens';
 import { CHART_MARGIN, axisProps, gridProps, tooltipProps } from './chartDefaults';
 import { ChartFrame } from './ChartFrame';
 import type { SeriesChartProps } from './types';
@@ -55,7 +55,7 @@ export function BarSeriesChart({
             key={spec.key}
             dataKey={spec.key}
             name={spec.label ?? spec.key}
-            fill={spec.color ?? seriesColor(index)}
+            fill={spec.color ?? tokens.series[index % tokens.series.length]}
             stackId={stacked ? 'stack' : undefined}
             radius={stacked ? 0 : [3, 3, 0, 0]}
             isAnimationActive={false}
