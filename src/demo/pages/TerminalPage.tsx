@@ -4,7 +4,9 @@
  * The panel is backed by `createLocalTransport`, which runs a small line
  * editor in the browser — so the demo works with nothing behind it. Pointing
  * the same panel at a real machine is a one-line swap to
- * `createTtydTransport({ url })`.
+ * `createTtydTransport({ url })`. Behind an auth proxy that hands out
+ * single-use tickets, pass `url` as `(signal) => fetchTicketUrl(signal)`: it
+ * runs again on every reconnect, and a dropped session reconnects on Enter.
  */
 import { useMemo, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
