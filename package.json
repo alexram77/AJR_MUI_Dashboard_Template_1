@@ -3,16 +3,17 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "AJR MUI dashboard kit \u2014 shared theme, app shell and plug-and-play blocks, plus a Netlify-servable demo.",
+  "description": "AJR MUI dashboard kit — shared theme, app shell and plug-and-play blocks, plus a Netlify-servable demo.",
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc -b --noEmit",
     "build": "tsc -b --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
+    "test": "vitest run",
     "test:mobile": "node tests/mobile.mjs",
     "test:smoke": "node tests/smoke.mjs",
-    "verify": "npm run typecheck && npm run lint && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -30,6 +31,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
     "@types/node": "^24.3.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
@@ -38,9 +41,11 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "jsdom": "^27.4.0",
     "playwright": "^1.63.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.43.0",
-    "vite": "^7.1.5"
+    "vite": "^7.1.5",
+    "vitest": "^4.1.12"
   }
 }
