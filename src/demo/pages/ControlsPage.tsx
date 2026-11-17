@@ -13,11 +13,16 @@ import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
+import ViewStreamRoundedIcon from '@mui/icons-material/ViewStreamRounded';
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import { PageContainer, PageToolbar } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { ActionButton, ButtonRow, MenuButton, SegmentedControl, ToolbarButton, ToolbarIconButton } from '@kit/components/buttons';
 import { SearchField } from '@kit/components/controls';
-import { ConfirmDialog, EmptyState, FullScreenDialog, StateBlock } from '@kit/components/feedback';
+import { ConfirmDialog, EmptyState, FullScreenDialog, StateBlock, useToast } from '@kit/components/feedback';
 import { KeyValueList } from '@kit/components/data';
 import { useDisclosure } from '@kit/hooks';
 import { bodyMuted, captionMuted } from '@kit/theme';
@@ -28,6 +33,9 @@ export default function ControlsPage() {
   const [saving, setSaving] = useState(false);
   const [query, setQuery] = useState('');
   const [density, setDensity] = useState<'compact' | 'cosy' | 'roomy'>('cosy');
+  const [layout, setLayout] = useState<'grid' | 'list' | 'stream'>('grid');
+  const [severity, setSeverity] = useState<'warn' | 'error' | null>(null);
+  const toast = useToast();
 
   /** Fake a request so the loading state is visible for a beat. */
   const runSave = () => {
@@ -147,6 +155,32 @@ export default function ControlsPage() {
                 Selected: {density}. Re-clicking the active option is ignored, so the control can
                 never end up with nothing selected.
               </Typography>
+              <SegmentedControl
+                options={[
+                  { value: 'grid' as const, label: 'Grid', icon: <GridViewRoundedIcon />, iconOnly: true },
+                  { value: 'list' as const, label: 'List', icon: <ViewListRoundedIcon />, iconOnly: true },
+                  { value: 'stream' as const, label: 'Stream', icon: <ViewStreamRoundedIcon />, iconOnly: true, disabled: true },
+                ]}
+                value={layout}
+                onChange={setLayout}
+                ariaLabel="Layout"
+              />
+              <Typography sx={captionMuted}>
+                Icon-only: the label becomes the accessible name and the tooltip. Layout: {layout}.
+              </Typography>
+              <SegmentedControl
+                allowDeselect
+                options={[
+                  { value: 'warn' as const, label: 'Warnings', icon: <WarningAmberRoundedIcon />, tooltip: 'Show warnings only' },
+                  { value: 'error' as const, label: 'Errors', icon: <ErrorOutlineRoundedIcon />, tooltip: 'Show errors only' },
+                ]}
+                value={severity}
+                onChange={setSeverity}
+                ariaLabel="Severity filter"
+              />
+              <Typography sx={captionMuted}>
+                With <code>allowDeselect</code>, re-clicking clears the choice. Filter: {severity ?? 'none'}.
+              </Typography>
             </Stack>
           </SectionCard>
         </Grid>
@@ -188,6 +222,35 @@ export default function ControlsPage() {
           </Button>
           <Button variant="outlined" size="small" onClick={fullScreen.onOpen}>
             Open FullScreenDialog
+          </Button>
+        </Stack>
+      </SectionCard>
+
+      <SectionCard
+        title="Toast"
+        subtitle="useToast() from anywhere below ToastProvider. One shows at a time; the rest queue, and a repeat of the one just shown is dropped. Errors stay up longest."
+      >
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+          <Button variant="outlined" size="small" onClick={() => toast.success('Settings saved')}>
+            Success
+          </Button>
+          <Button variant="outlined" size="small" onClick={() => toast.info('Sync started — 12 files queued')}>
+            Info
+          </Button>
+          <Button variant="outlined" size="small" color="warning" onClick={() => toast.warning('Storage is 85% full')}>
+            Warning
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={() =>
+              toast.error('Save failed — check the connection', {
+                action: { label: 'Retry', onClick: () => toast.success('Saved on retry') },
+              })
+            }
+          >
+            Error with action
           </Button>
         </Stack>
       </SectionCard>
