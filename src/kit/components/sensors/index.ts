@@ -28,6 +28,7 @@ export type {
   ChannelSnapshot,
   ChannelTrend,
   ChannelCardConfig,
+  ChannelHardwareStatus,
   HistoryPoint,
   MeterType,
 } from './types';

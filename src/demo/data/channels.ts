@@ -5,7 +5,7 @@
  * healthy band, and a default meter. The simulator walks each channel around
  * its base value so the page is alive without a backend.
  */
-import type { ChannelDefinition, ChannelSnapshot } from '@kit/components/sensors';
+import type { ChannelDefinition, ChannelHardwareStatus, ChannelSnapshot } from '@kit/components/sensors';
 
 /** Section colours. One place to retheme every band on the page. */
 export const SECTION_COLORS = {
@@ -35,6 +35,7 @@ export const CHANNELS: ChannelDefinition[] = [
   { id: 'env.temperature', label: 'Air temp', unit: '°C', min: 0, max: 50, optimalMin: 10, optimalMax: 35, baseValue: 24, meterType: 'thermometer', category: 'environment', sourceLabel: 'Environment probe' },
   { id: 'env.humidity', label: 'Humidity', unit: '%', min: 0, max: 100, optimalMin: 20, optimalMax: 60, baseValue: 38, meterType: 'gauge', category: 'environment', sourceLabel: 'Environment probe' },
   { id: 'env.pressure', label: 'Pressure', unit: 'hPa', min: 900, max: 1100, optimalMin: 980, optimalMax: 1040, baseValue: 1013, meterType: 'gauge', category: 'environment', sourceLabel: 'Environment probe' },
+  { id: 'env.co2', label: 'CO₂', unit: 'ppm', min: 300, max: 2000, optimalMin: 350, optimalMax: 1000, baseValue: 600, meterType: 'gauge', category: 'environment', sourceLabel: 'Environment probe' },
   { id: 'env.voc', label: 'VOC resistance', unit: 'kΩ', min: 0, max: 500, optimalMin: 50, optimalMax: 500, baseValue: 210, meterType: 'chart', category: 'environment', sourceLabel: 'Environment probe' },
 
   // ── Power ─────────────────────────────────────────────────────────────────
@@ -92,6 +93,19 @@ export const CHANNEL_COLORS: Record<string, string> = {
 };
 
 /**
+ * Channels whose hardware is not fitted on the simulated rig. They never
+ * report, so their cards show "No data" and the absent-hardware badge.
+ */
+export const CHANNEL_HARDWARE: Record<string, ChannelHardwareStatus> = {
+  'env.co2': {
+    absent: true,
+    label: 'Not detected',
+    tone: 'neutral',
+    detail: 'No CO₂ sensor answered on the I²C bus. Real apps usually hide this card outside an edit mode.',
+  },
+};
+
+/**
  * One simulated snapshot.
  *
  * `phase` advances each tick; channels drift on slow sines of different
@@ -102,6 +116,8 @@ export function simulateSnapshot(phase: number, faulted: boolean): ChannelSnapsh
   const readings: ChannelSnapshot['readings'] = {};
 
   CHANNELS.forEach((channel, index) => {
+    // Absent hardware never reports: no reading at all, not a zero.
+    if (CHANNEL_HARDWARE[channel.id]?.absent) return;
     let value: number;
 
     if (channel.meterType === 'state') {
