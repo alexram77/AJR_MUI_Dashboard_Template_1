@@ -5,7 +5,7 @@
  * each other — overlapping fills obscure crossings.
  */
 import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
-import { useChartTokens, seriesColor } from '../../theme/chartTokens';
+import { useChartTokens } from '../../theme/chartTokens';
 import { CHART_MARGIN, axisProps, gridProps, paddedDomain, tooltipProps } from './chartDefaults';
 import { ChartFrame } from './ChartFrame';
 import type { SeriesChartProps } from './types';
@@ -38,7 +38,7 @@ export function LineSeriesChart({
         {legend && <Legend wrapperStyle={{ fontSize: 11, color: tokens.axis }} />}
 
         {series.map((spec, index) => {
-          const color = spec.color ?? seriesColor(index);
+          const color = spec.color ?? tokens.series[index % tokens.series.length];
           return (
             <Line
               key={spec.key}

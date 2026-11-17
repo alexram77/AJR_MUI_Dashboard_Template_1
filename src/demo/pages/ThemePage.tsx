@@ -13,7 +13,7 @@ import { PageContainer } from '@kit/components/page';
 import { SectionCard } from '@kit/components/cards';
 import { KeyValueList } from '@kit/components/data';
 import { amber, bodyMuted, brand, captionMuted, gray, green, monoFamily, red, statusColors } from '@kit/theme';
-import { seriesColor } from '@kit/theme';
+import { seriesColor, useChartScheme } from '@kit/theme';
 
 /** One colour chip with its shade number and value. */
 function Swatch({ shade, value }: { shade: string; value: string }) {
@@ -60,6 +60,7 @@ const TYPE_SCALE = [
 ];
 
 export default function ThemePage() {
+  const scheme = useChartScheme();
   return (
     <PageContainer
     >
@@ -85,11 +86,11 @@ export default function ThemePage() {
         <Grid size={{ xs: 12, lg: 6 }}>
           <SectionCard
             title="Chart series ramp"
-            subtitle="Ordered so adjacent series stay distinguishable in both schemes and for the common forms of colour blindness."
+            subtitle={`Validated for colour-blind separation in both schemes; this is the ${scheme} step of each slot. Assign in order — the order is what keeps neighbours apart.`}
           >
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
               {Array.from({ length: 8 }, (_, index) => (
-                <Swatch key={index} shade={`series[${index}]`} value={seriesColor(index)} />
+                <Swatch key={index} shade={`series[${index}]`} value={seriesColor(index, scheme)} />
               ))}
             </Stack>
           </SectionCard>

@@ -25,6 +25,7 @@ import { fmtNumber } from '@kit/utils';
 import {
   CHANNELS,
   CHANNELS_BY_ID,
+  CHANNEL_HARDWARE,
   CHANNEL_COLORS,
   SECTION_COLORS,
   SECTION_ORDER,
@@ -158,6 +159,7 @@ export default function SensorsPage() {
                 meterType={meterOverrides[channel.id] ?? channel.meterType}
                 alias={aliases[channel.id]}
                 color={CHANNEL_COLORS[channel.id]}
+                hardware={CHANNEL_HARDWARE[channel.id]}
                 onMeterTypeChange={
                   channel.meterType === 'state'
                     ? undefined

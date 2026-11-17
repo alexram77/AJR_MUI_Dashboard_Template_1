@@ -5,6 +5,10 @@
  * cards they produce, so a block is recognisable before it is dropped. Drags
  * carry `BLOCK_DND_TYPE`, which `FlowCanvas` uses to tell a palette drag from
  * a text or file drag.
+ *
+ * A block marked `disabled` stays in the list, greyed, with its reason under
+ * the label; it cannot be dragged or clicked in. Its category heading counts
+ * it like any other, so the library does not reshuffle as availability changes.
  */
 import { useMemo } from 'react';
 import Box from '@mui/material/Box';
@@ -82,71 +86,93 @@ export function BlockPalette({
             </Typography>
 
             <Stack spacing={0.25} sx={{ px: 1 }}>
-              {group.items.map((block) => (
-                <Box
-                  key={block.type}
-                  draggable
-                  title={block.description}
-                  onClick={onAdd ? () => onAdd(block) : undefined}
-                  onDragStart={(event) => {
-                    event.dataTransfer.setData(BLOCK_DND_TYPE, block.type);
-                    event.dataTransfer.effectAllowed = 'copy';
-                  }}
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    px: 1.25,
-                    py: 0.75,
-                    borderRadius: 1,
-                    border: '1px solid transparent',
-                    cursor: 'grab',
-                    transition: 'background-color 100ms ease, border-color 100ms ease',
-                    '&:hover': {
-                      bgcolor: alpha(group.style.color, theme.palette.mode === 'dark' ? 0.08 : 0.06),
-                      borderColor: alpha(group.style.color, 0.3),
-                    },
-                    '&:active': { cursor: 'grabbing' },
-                  }}
-                >
+              {group.items.map((block) => {
+                const disabled = block.disabled === true;
+                return (
                   <Box
+                    key={block.type}
+                    draggable={!disabled}
+                    aria-disabled={disabled || undefined}
+                    data-block-type={block.type}
+                    title={disabled ? block.disabledReason ?? block.description : block.description}
+                    onClick={onAdd && !disabled ? () => onAdd(block) : undefined}
+                    onDragStart={(event) => {
+                      if (disabled) {
+                        event.preventDefault();
+                        return;
+                      }
+                      event.dataTransfer.setData(BLOCK_DND_TYPE, block.type);
+                      event.dataTransfer.effectAllowed = 'copy';
+                    }}
                     sx={{
-                      width: 22,
-                      height: 22,
-                      flexShrink: 0,
                       display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: 0.75,
-                      bgcolor: group.style.iconBg,
-                      color: group.style.color,
-                      fontSize: '0.95rem',
+                      alignItems: disabled && block.disabledReason ? 'flex-start' : 'center',
+                      gap: 1,
+                      px: 1.25,
+                      py: 0.75,
+                      borderRadius: 1,
+                      border: '1px solid transparent',
+                      cursor: disabled ? 'not-allowed' : 'grab',
+                      opacity: disabled ? 0.55 : 1,
+                      transition: 'background-color 100ms ease, border-color 100ms ease',
+                      '&:hover': disabled
+                        ? {}
+                        : {
+                            bgcolor: alpha(group.style.color, theme.palette.mode === 'dark' ? 0.08 : 0.06),
+                            borderColor: alpha(group.style.color, 0.3),
+                          },
+                      '&:active': { cursor: disabled ? 'not-allowed' : 'grabbing' },
                     }}
                   >
-                    {block.icon}
-                  </Box>
-
-                  <Typography variant="body2" sx={{ fontSize: '0.825rem', fontWeight: 500, lineHeight: 1.2 }}>
-                    {block.label}
-                  </Typography>
-
-                  {block.isContainer && (
                     <Box
                       sx={{
-                        ml: 'auto',
-                        px: 0.5,
-                        borderRadius: 0.5,
-                        fontSize: '0.6rem',
-                        fontWeight: 700,
-                        color: 'text.secondary',
-                        bgcolor: alpha(theme.palette.text.secondary, 0.12),
+                        width: 22,
+                        height: 22,
+                        flexShrink: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 0.75,
+                        bgcolor: group.style.iconBg,
+                        color: group.style.color,
+                        fontSize: '0.95rem',
                       }}
                     >
-                      GRP
+                      {block.icon}
                     </Box>
-                  )}
-                </Box>
-              ))}
+
+                    <Box sx={{ minWidth: 0, flex: 1 }}>
+                      <Typography variant="body2" sx={{ fontSize: '0.825rem', fontWeight: 500, lineHeight: 1.2 }}>
+                        {block.label}
+                      </Typography>
+                      {disabled && block.disabledReason && (
+                        <Typography
+                          variant="caption"
+                          sx={{ display: 'block', fontSize: '0.66rem', lineHeight: 1.3, mt: 0.25, color: 'text.secondary' }}
+                        >
+                          {block.disabledReason}
+                        </Typography>
+                      )}
+                    </Box>
+
+                    {block.isContainer && (
+                      <Box
+                        sx={{
+                          ml: 'auto',
+                          px: 0.5,
+                          borderRadius: 0.5,
+                          fontSize: '0.6rem',
+                          fontWeight: 700,
+                          color: 'text.secondary',
+                          bgcolor: alpha(theme.palette.text.secondary, 0.12),
+                        }}
+                      >
+                        GRP
+                      </Box>
+                    )}
+                  </Box>
+                );
+              })}
             </Stack>
           </Box>
         ))}

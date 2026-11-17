@@ -5,8 +5,14 @@
  * monitoring page. Layout is fixed so a grid of mixed meter types stays
  * aligned; what varies is the meter, which the user can cycle through.
  *
- * A channel that has never reported shows its declared base value with the
- * reading greyed, rather than a confident zero.
+ * A channel with no usable reading shows "No data" and no meter at all. It
+ * never draws a stand-in (a base value, the band midpoint, the scale minimum):
+ * a needle sitting at a made-up value reads as a measurement, which is how a
+ * unit with no battery came to show a battery level.
+ *
+ * `hardware` reports whether the channel's source is physically there. An
+ * absent source dims the card and says why; apps usually hide such cards
+ * outside an edit mode, and show them dimmed inside it.
  */
 import { useState } from 'react';
 import Box from '@mui/material/Box';
@@ -16,6 +22,7 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import LinkOffRoundedIcon from '@mui/icons-material/LinkOffRounded';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import CloseIcon from '@mui/icons-material/Close';
@@ -25,10 +32,19 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import { useTheme } from '@mui/material/styles';
 import { captionMuted, flexCenter } from '../../theme/styleTokens';
 import { EMPTY } from '../../utils/format';
+import type { Tone } from '../../utils/color';
+import { IndicatorBadge } from '../status/IndicatorBadge';
 import { MeterRenderer } from './MeterRenderer';
 import { InlineAliasEditor } from './InlineAliasEditor';
 import { statusTextForReading, toneForReading } from './channelStatus';
-import type { ChannelDefinition, ChannelReading, ChannelTrend, HistoryPoint, MeterType } from './types';
+import type {
+  ChannelDefinition,
+  ChannelHardwareStatus,
+  ChannelReading,
+  ChannelTrend,
+  HistoryPoint,
+  MeterType,
+} from './types';
 
 /** Order the meter-cycle button walks. `state` is excluded: it is a property
  *  of the channel, not a view of a numeric one. */
@@ -51,6 +67,8 @@ export interface ChannelCardProps {
   onMeterTypeChange?: (meterType: MeterType) => void;
   /** Enable click-to-rename. */
   onAliasChange?: (alias: string) => void;
+  /** Whether the channel's hardware is present. Absent dims the card and shows why. */
+  hardware?: ChannelHardwareStatus;
   /** Drag handlers for a reorderable grid. */
   draggable?: boolean;
   onDragStart?: (event: React.DragEvent) => void;
@@ -69,6 +87,7 @@ export function ChannelCard({
   onRemove,
   onMeterTypeChange,
   onAliasChange,
+  hardware,
   draggable = false,
   onDragStart,
   onDragOver,
@@ -78,16 +97,21 @@ export function ChannelCard({
   const [hovered, setHovered] = useState(false);
 
   const activeMeter = meterType ?? definition.meterType;
-  const hasReading = reading?.value !== null && reading?.value !== undefined && reading.valid;
-  const value = hasReading ? (reading.value as number) : definition.baseValue ?? definition.min;
+  // A reading counts only when it is a finite number the source vouched for.
+  const value: number | null =
+    reading?.valid && typeof reading.value === 'number' && Number.isFinite(reading.value)
+      ? reading.value
+      : null;
+  const absent = hardware?.absent === true;
 
-  const tone = toneForReading(value, definition);
-  const statusColor = {
+  const toneColor: Record<Tone, string> = {
     ok: theme.palette.success.main,
     warn: theme.palette.warning.main,
     bad: theme.palette.error.main,
     neutral: theme.palette.text.disabled,
-  }[tone];
+  };
+  const statusColor = toneColor[value === null ? 'neutral' : toneForReading(value, definition)];
+  const statusText = value === null ? 'No data' : statusTextForReading(value, definition);
 
   const TrendIcon =
     trend?.direction === 'up' ? ArrowUpwardIcon : trend?.direction === 'down' ? ArrowDownwardIcon : RemoveIcon;
@@ -112,12 +136,14 @@ export function ChannelCard({
       onDrop={onDrop}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      data-absent={absent || undefined}
       sx={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         cursor: draggable ? 'grab' : 'default',
+        opacity: absent ? 0.55 : 1,
         transition: 'box-shadow 0.2s ease',
         '&:hover': { boxShadow: 3 },
       }}
@@ -149,7 +175,7 @@ export function ChannelCard({
           {/* Status well · meter cycle · trend — three equal boxes so every
               card's header row lines up regardless of which controls are on. */}
           <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ width: '100%' }}>
-            <Tooltip title={statusTextForReading(value, definition)}>
+            <Tooltip title={statusText}>
               <Box sx={{ ...flexCenter, width: 28, height: 28, borderRadius: 1, bgcolor: statusColor }}>
                 <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: 'rgba(255,255,255,0.85)' }} />
               </Box>
@@ -185,6 +211,16 @@ export function ChannelCard({
             </Box>
           </Stack>
 
+          {absent && hardware && (
+            <IndicatorBadge
+              dense
+              icon={<LinkOffRoundedIcon />}
+              label={hardware.label}
+              color={toneColor[hardware.tone]}
+              tooltip={hardware.detail}
+            />
+          )}
+
           <InlineAliasEditor
             alias={alias}
             defaultLabel={definition.label}
@@ -195,7 +231,7 @@ export function ChannelCard({
           <Typography variant="caption" sx={captionMuted}>
             Status:{' '}
             <Box component="span" sx={{ color: statusColor, fontWeight: 600 }}>
-              {statusTextForReading(value, definition)}
+              {statusText}
             </Box>
           </Typography>
 
@@ -207,17 +243,22 @@ export function ChannelCard({
               minHeight: 90,
             }}
           >
-            <MeterRenderer
-              meterType={activeMeter}
-              value={value}
-              definition={definition}
-              color={color}
-              history={history}
-            />
+            {value === null ? (
+              <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                No data
+              </Typography>
+            ) : (
+              <MeterRenderer
+                meterType={activeMeter}
+                value={value}
+                definition={definition}
+                color={color}
+                history={history}
+              />
+            )}
           </Box>
 
-          {/* Reading. Greyed when the channel has never reported, so a base
-              value is never mistaken for a measurement. */}
+          {/* Reading. An em dash, never a zero, when there is nothing to show. */}
           <Box
             sx={{
               ...flexCenter,
@@ -236,10 +277,10 @@ export function ChannelCard({
                 fontWeight: 700,
                 fontSize: '1rem',
                 lineHeight: 1.4,
-                color: hasReading ? 'text.primary' : 'text.disabled',
+                color: value === null ? 'text.disabled' : 'text.primary',
               }}
             >
-              {hasReading ? `${value.toFixed(1)} ${definition.unit}`.trim() : EMPTY}
+              {value === null ? EMPTY : `${value.toFixed(1)} ${definition.unit}`.trim()}
             </Typography>
           </Box>
         </Stack>

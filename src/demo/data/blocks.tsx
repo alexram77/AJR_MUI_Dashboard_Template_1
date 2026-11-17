@@ -33,7 +33,7 @@ export const BLOCKS: BlockDefinition[] = [
   { type: 'action.filter', label: 'Filter', category: 'action', icon: <FilterAltRoundedIcon fontSize="inherit" />, description: 'Drop rows that fail a predicate.' },
   { type: 'action.aggregate', label: 'Aggregate', category: 'action', icon: <FunctionsRoundedIcon fontSize="inherit" />, description: 'Group and reduce.' },
 
-  { type: 'capture.snapshot', label: 'Snapshot', category: 'capture', icon: <PhotoCameraRoundedIcon fontSize="inherit" />, description: 'Persist the current state for replay.' },
+  { type: 'capture.snapshot', label: 'Snapshot', category: 'capture', icon: <PhotoCameraRoundedIcon fontSize="inherit" />, description: 'Persist the current state for replay.', disabled: true, disabledReason: 'Needs a snapshot store; none is configured.' },
 
   { type: 'log.note', label: 'Note', category: 'log', icon: <NotesRoundedIcon fontSize="inherit" />, description: 'Write a marker into the run log.' },
 

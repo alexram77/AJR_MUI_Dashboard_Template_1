@@ -21,7 +21,12 @@ export type { ToolbarIconButtonProps } from './ToolbarIconButton';
 export { MenuButton, OverflowMenuButton } from './MenuButton';
 export type { MenuButtonProps, MenuAction } from './MenuButton';
 export { SegmentedControl } from './SegmentedControl';
-export type { SegmentedControlProps, SegmentedOption } from './SegmentedControl';
+export type {
+  SegmentedControlProps,
+  SegmentedControlRequiredProps,
+  SegmentedControlDeselectProps,
+  SegmentedOption,
+} from './SegmentedControl';
 export { ButtonRow } from './ButtonRow';
 export type { ButtonRowProps } from './ButtonRow';
 export { BUTTON_INTENTS, BUTTON_HEIGHTS, muiSizeFor } from './buttonTokens';

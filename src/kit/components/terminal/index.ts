@@ -4,7 +4,7 @@ export type { TerminalPanelHandle, TerminalPanelProps } from './TerminalPanel';
 export { CommandSidebar } from './CommandSidebar';
 export type { CommandSidebarProps } from './CommandSidebar';
 export { createTtydTransport } from './ttydTransport';
-export type { TtydTransportOptions } from './ttydTransport';
+export type { TtydTransportOptions, TtydUrlResolver } from './ttydTransport';
 export { createLocalTransport } from './localTransport';
 export type { LocalTransportOptions, CommandHandler } from './localTransport';
 export { terminalTheme, ansi, TERMINAL_BACKGROUND, TERMINAL_FONT } from './terminalTheme';

@@ -37,7 +37,10 @@ export interface ChannelDefinition {
   source?: string;
   /** Display name for the source group. */
   sourceLabel?: string;
-  /** Shown when the channel has never reported. */
+  /**
+   * Typical value, for simulators and seeded demos. Never drawn as a reading:
+   * a channel with no reading shows "No data", not this.
+   */
   baseValue?: number;
   /** Declared states for a `state` meter, keyed by value. */
   states?: Record<string | number, { label: string; tone: Tone }>;
@@ -48,6 +51,22 @@ export interface ChannelReading {
   value: number | null;
   timestamp: number;
   valid: boolean;
+}
+
+/**
+ * Whether a channel's hardware is physically there, when the app knows.
+ *
+ * `absent` is the only flag the card acts on: it dims the card and shows
+ * `label` in a badge, with `detail` as the tooltip. A present source needs
+ * no badge, so most apps pass this only for the missing ones.
+ */
+export interface ChannelHardwareStatus {
+  absent: boolean;
+  /** Short state word: "Not detected", "Disabled", "Error". */
+  label: string;
+  tone: Tone;
+  /** Why, for the tooltip: "No answer on I²C 0x76". */
+  detail?: string;
 }
 
 /** Everything read at one moment. */

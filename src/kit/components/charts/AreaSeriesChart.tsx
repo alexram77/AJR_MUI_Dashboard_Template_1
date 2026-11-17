@@ -5,7 +5,7 @@
  * a bare line does not.
  */
 import { Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
-import { useChartTokens, seriesColor } from '../../theme/chartTokens';
+import { useChartTokens } from '../../theme/chartTokens';
 import { CHART_MARGIN, axisProps, gridProps, paddedDomain, tooltipProps } from './chartDefaults';
 import { ChartFrame } from './ChartFrame';
 import type { SeriesChartProps } from './types';
@@ -45,7 +45,7 @@ export function AreaSeriesChart({
       <AreaChart data={rows} margin={CHART_MARGIN}>
         <defs>
           {series.map((spec, index) => {
-            const color = spec.color ?? seriesColor(index);
+            const color = spec.color ?? tokens.series[index % tokens.series.length];
             return (
               <linearGradient key={spec.key} id={`area-${spec.key}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={color} stopOpacity={0.28} />
@@ -67,7 +67,7 @@ export function AreaSeriesChart({
         {legend && <Legend wrapperStyle={{ fontSize: 11, color: tokens.axis }} />}
 
         {series.map((spec, index) => {
-          const color = spec.color ?? seriesColor(index);
+          const color = spec.color ?? tokens.series[index % tokens.series.length];
           return (
             <Area
               key={spec.key}
