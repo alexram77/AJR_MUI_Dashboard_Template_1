@@ -26,7 +26,8 @@ npm run build      # typecheck + production bundle into dist/
 npm run preview    # serve the built bundle
 npm run lint
 npm run typecheck
-npm run verify     # typecheck + lint + build, in one
+npm test           # unit tests (vitest + jsdom), tests/unit/
+npm run verify     # typecheck + lint + unit tests + build, in one
 
 # Browser tests — need a preview server running on the port you pass
 npx vite preview --port 4173 &
@@ -135,13 +136,15 @@ src/kit/
 │   ├── page/           PageContainer, PageToolbar, PageTabs, SplitPane
 │   ├── cards/          SectionCard, MetricCard, StatCard, SidebarCard
 │   ├── controls/       SearchField
-│   ├── feedback/       ConfirmDialog, FullScreenDialog, StateBlock, EmptyState
+│   ├── feedback/       ConfirmDialog, FullScreenDialog, StateBlock, EmptyState,
+│   │                   ToastProvider + useToast
 │   ├── data/           DataTable, KeyValueList
 │   ├── meters/         GaugeMeter, LevelMeter, ThermometerMeter, StateMeter,
 │   │                   TimeSeriesMeter, MeterCard
 │   ├── charts/         AreaSeriesChart, LineSeriesChart, BarSeriesChart, Sparkline
 │   ├── sensors/        ChannelCard, ChannelSection, MeterRenderer, channel status logic
-│   ├── terminal/       TerminalPanel, CommandSidebar, ttyd + local transports
+│   ├── terminal/       TerminalPanel, CommandSidebar, ttyd (reconnects, per-connect
+│   │                   ticket URL) + local transports
 │   └── flow/           FlowEditor, FlowCanvas, BlockPalette, BlockNode, BlockInspector
 │
 ├── hooks/              useIsMobile, useLocalStorage, usePersistedState, useAsync,
@@ -176,14 +179,17 @@ resolve: { alias: { '@kit': fileURLToPath(new URL('./src/kit', import.meta.url))
 "paths": { "@kit/*": ["src/kit/*"] }
 ```
 
-**2. Wrap the app in `AppTheme`:**
+**2. Wrap the app in `AppTheme`** (and `ToastProvider`, if pages will call `useToast()`):
 
 ```tsx
 import { AppTheme } from '@kit/theme';
+import { ToastProvider } from '@kit/components/feedback';
 
 createRoot(el).render(
   <AppTheme defaultMode="dark">
-    <BrowserRouter><App /></BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter><App /></BrowserRouter>
+    </ToastProvider>
   </AppTheme>,
 );
 ```
@@ -260,11 +266,11 @@ loading/error/empty states in `components/feedback`, tables in `components/data`
 hex literal in a component is a bug.
 
 Conventions worth keeping (each came out of a real deployment going wrong): missing data renders as
-`—`, never `0`; loading, error and empty are three distinct states; a health check in flight is not
+`—`, never `0`, and a meter with no reading is not drawn at all; loading, error and empty are three distinct states; a health check in flight is not
 a failure; simulated data is amber, never green. [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) has
 the rest, plus how to add a block.
 
-Before opening a PR: `npm run verify`, then `npm run test:smoke` and `npm run test:mobile` against
+Before opening a PR: `npm run verify` (it runs the unit tests), then `npm run test:smoke` and `npm run test:mobile` against
 a served build.
 
 ## Colour scheme
