@@ -31,6 +31,15 @@ export interface BlockDefinition {
   description?: string;
   /** Blocks that contain other blocks; the node card gets a drill-in affordance. */
   isContainer?: boolean;
+  /**
+   * The block cannot be used here (the target has no camera, the plan does
+   * not include it). The palette shows it greyed with the reason and will not
+   * drag or add it. Hiding it instead would leave the user wondering where it
+   * went.
+   */
+  disabled?: boolean;
+  /** Why it is disabled, shown under the label and as the tooltip. */
+  disabledReason?: string;
 }
 
 /** Data carried on a canvas node. Read by `BlockNode`. */

@@ -166,7 +166,8 @@ export default function FlowBuilderPage() {
 
   const addBlock = useCallback((type: string, position?: { x: number; y: number }) => {
     const definition = BLOCKS_BY_TYPE[type];
-    if (!definition) return;
+    // The palette never offers a disabled block, but a drop is still input.
+    if (!definition || definition.disabled) return;
     const id = `n${nextId++}`;
     setBlocks((previous) => [
       ...previous,
